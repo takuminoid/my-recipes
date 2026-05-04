@@ -1,29 +1,41 @@
 # My Recipes
 
-日々の自炊レシピを記録・参照するための個人用ローカルWebアプリ。
+日々の自炊レシピを記録・参照するための個人用ローカル Web アプリ。
+
+![一覧画面](docs/screenshots/list.png)
 
 ## 機能
 
 - レシピの追加・編集・削除
-- 料理名での検索
-- 作った日の新しい順に表示
-- レシピのアイコンを絵文字ピッカーで選択可能（未設定時は自動アサイン）
-- 材料ごとに名前と量を管理（ドラッグ&ドロップで並び替え可）
+- 料理名でのリアルタイム検索
+- 作った日の新しい順にグリッド表示
+- アイコン（絵文字）をピッカーで選択（未設定時は自動アサイン）
+- 材料の名前・量を管理（ドラッグ&ドロップで並び替え可）
+- 作り方の Markdown 記述対応
+- 評価（★1〜5）・参考 URL・メモの記録
 - 作った日は任意入力
-- 作り方のMarkdown記述対応
-- 評価・参考URL・メモの記録
+
+![詳細画面](docs/screenshots/detail.png)
 
 ## 技術スタック
 
-- [Next.js](https://nextjs.org) (App Router)
-- [Drizzle ORM](https://orm.drizzle.team) + SQLite
-- [Tailwind CSS](https://tailwindcss.com)
+| | |
+|---|---|
+| フレームワーク | [Next.js 16](https://nextjs.org) (App Router) |
+| DB | [Drizzle ORM](https://orm.drizzle.team) + SQLite (`better-sqlite3`) |
+| スタイル | [Tailwind CSS v4](https://tailwindcss.com) |
+| プロセス管理 | [PM2](https://pm2.keymetrics.io) |
+
+## 動作環境
+
+- **Node.js**: 22.x
+- **OS**: macOS（PM2 の自動起動手順は macOS 前提）
 
 ## 初回セットアップ
 
 ```bash
 npm install
-npx drizzle-kit push   # recipes.db を生成
+npm run db-push   # recipes.db を生成
 ```
 
 ## 起動方法
@@ -31,7 +43,7 @@ npx drizzle-kit push   # recipes.db を生成
 ### 開発時（ホットリロードあり）
 
 ```bash
-npm run dev
+make dev
 ```
 
 `http://localhost:3939` にアクセス。
@@ -41,20 +53,14 @@ npm run dev
 PM2 を使ってバックグラウンドで常駐させる。Mac ログイン時に自動起動される。
 
 ```bash
-# 初回のみ: PM2 のインストールと自動起動設定
+# 初回のみ
 npm install -g pm2
-npm run build
-pm2 start ecosystem.config.js
+make deploy
 pm2 save
-pm2 startup  # 表示されたコマンドを sudo で実行
-
-# 以降の起動・停止
-pm2 start my-recipes
-pm2 stop my-recipes
-pm2 status
+pm2 startup   # 表示されたコマンドを sudo で実行
 ```
 
-## よく使うコマンド（Makefile）
+## よく使うコマンド
 
 ```bash
 make dev        # 開発サーバー起動
@@ -76,9 +82,13 @@ make deploy
 
 ## データ
 
-レシピデータは `recipes.db`（SQLiteファイル）にローカル保存される。
+レシピデータは `recipes.db`（SQLite ファイル）にローカル保存される。
 バックアップは手動でファイルをコピーすること。
 
 ```bash
 cp recipes.db recipes.db.bak
 ```
+
+## ライセンス
+
+[MIT](LICENSE)
