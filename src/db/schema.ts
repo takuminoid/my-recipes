@@ -5,7 +5,7 @@ export const recipes = sqliteTable("recipes", {
   id: int("id").primaryKey({ autoIncrement: true }),
   name: text("name").notNull(),
   steps: text("steps").notNull(),
-  cookedAt: text("cooked_at").notNull(),
+  cookedAt: text("cooked_at"),
   refUrl: text("ref_url"),
   rating: int("rating").notNull().default(3),
   memo: text("memo"),
