@@ -9,7 +9,8 @@ export default async function RecipeDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const res = await fetch(`http://localhost:3000/api/recipes/${id}`, { cache: "no-store" });
+  const port = process.env.PORT ?? 3939;
+  const res = await fetch(`http://localhost:${port}/api/recipes/${id}`, { cache: "no-store" });
   if (!res.ok) notFound();
   const recipe = await res.json();
 
