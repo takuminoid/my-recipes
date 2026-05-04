@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --color-terra: #c2440e;
+  --color-terra-light: #fff3e8;
+  --color-cream: #fdf8f3;
+  --color-brown-dark: #2c1a0e;
+  --color-brown-mid: #a0836e;
+  --color-brown-light: #f0e0d0;
+  --color-amber: #e8830a;
+}
+
 .prose ol {
   list-style-type: decimal;
   padding-left: 1.5rem;
@@ -56,7 +66,7 @@
 
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #fdf8f3;
+  color: #2c1a0e;
   font-family: Arial, Helvetica, sans-serif;
 }

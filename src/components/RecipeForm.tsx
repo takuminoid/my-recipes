@@ -63,14 +63,14 @@ function SortableIngredientRow({
         placeholder="材料名"
         value={ing.name}
         onChange={(e) => onUpdate("name", e.target.value)}
-        className="flex-1 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+        className="flex-1 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra"
       />
       <input
         type="text"
         placeholder="量（例: 300g）"
         value={ing.amount}
         onChange={(e) => onUpdate("amount", e.target.value)}
-        className="w-32 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+        className="w-32 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra"
       />
       {showRemove && (
         <button
@@ -197,7 +197,7 @@ export default function RecipeForm({ initial }: Props) {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra"
         />
       </div>
 
@@ -207,7 +207,7 @@ export default function RecipeForm({ initial }: Props) {
           type="date"
           value={cookedAt}
           onChange={(e) => setCookedAt(e.target.value)}
-          className="border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra"
         />
       </div>
 
@@ -310,7 +310,7 @@ export default function RecipeForm({ initial }: Props) {
           value={refUrl}
           onChange={(e) => setRefUrl(e.target.value)}
           placeholder="https://..."
-          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra"
         />
       </div>
 
@@ -321,7 +321,7 @@ export default function RecipeForm({ initial }: Props) {
           onChange={(e) => setMemo(e.target.value)}
           rows={3}
           placeholder="次回こうしたい、など"
-          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black resize-y"
+          className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-terra resize-y"
         />
       </div>
 
@@ -329,7 +329,7 @@ export default function RecipeForm({ initial }: Props) {
         <button
           type="submit"
           disabled={submitting}
-          className="bg-black text-white text-sm px-6 py-2 rounded-lg hover:bg-zinc-700 transition-colors disabled:opacity-50"
+          className="bg-terra text-white text-sm px-6 py-2 rounded-lg hover:opacity-80 transition-opacity disabled:opacity-50"
         >
           {submitting ? "保存中..." : "保存"}
         </button>
