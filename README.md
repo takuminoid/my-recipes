@@ -7,7 +7,8 @@
 - レシピの追加・編集・削除
 - 料理名での検索
 - 作った日の新しい順に表示
-- 材料ごとに名前と量を管理
+- 材料ごとに名前と量を管理（ドラッグ&ドロップで並び替え可）
+- 作った日は任意入力
 - 作り方のMarkdown記述対応
 - 評価・参考URL・メモの記録
 
@@ -52,10 +53,15 @@ pm2 stop my-recipes
 pm2 status
 ```
 
-## コード変更後の反映手順
+## よく使うコマンド（Makefile）
 
 ```bash
-npm run build && pm2 restart my-recipes
+make dev        # 開発サーバー起動
+make deploy     # ビルド → PM2 再起動（本番反映）
+make restart    # ビルドなしで PM2 再起動
+make stop       # サーバー停止
+make logs       # PM2 ログ表示
+make db-push    # スキーマ変更を DB に反映
 ```
 
 ## スキーマ変更後の手順
@@ -63,8 +69,8 @@ npm run build && pm2 restart my-recipes
 `src/db/schema.ts` を変更した場合：
 
 ```bash
-npx drizzle-kit push   # DB に変更を適用
-npm run build && pm2 restart my-recipes
+make db-push
+make deploy
 ```
 
 ## データ
