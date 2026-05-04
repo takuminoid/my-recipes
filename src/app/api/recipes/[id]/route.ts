@@ -26,7 +26,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const body = await request.json();
   const { name, steps, cookedAt, refUrl, rating, memo, ingredients } = body;
 
-  if (!name || !steps || !cookedAt || !rating || !ingredients?.length) {
+  if (!name || !steps || !rating || !ingredients?.length) {
     return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
   }
 
