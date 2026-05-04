@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { name, steps, cookedAt, refUrl, rating, memo, ingredients } = body;
+  const { name, steps, cookedAt, icon, refUrl, rating, memo, ingredients } = body;
 
   if (!name || !steps || !rating || !ingredients?.length) {
     return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   const result = db.transaction(() => {
     const inserted = db
       .insert(recipes)
-      .values({ name, steps, cookedAt, refUrl, rating, memo, createdAt: now, updatedAt: now })
+      .values({ name, steps, cookedAt, icon, refUrl, rating, memo, createdAt: now, updatedAt: now })
       .returning()
       .all();
     const recipe = inserted[0];

@@ -45,7 +45,7 @@ export default function Home() {
                 href={`/recipes/${r.id}`}
                 className="block bg-white rounded-2xl p-5 border border-brown-light shadow-sm hover:-translate-y-1 hover:shadow-md transition-all duration-150 no-underline"
               >
-                <span className="text-4xl mb-3 block">{recipeEmoji(r.name)}</span>
+                <span className="text-4xl mb-3 block">{r.icon || recipeEmoji(r.name)}</span>
                 <p className="font-bold text-sm text-brown-dark mb-1.5 leading-snug">{r.name}</p>
                 {r.cookedAt && <p className="text-xs text-brown-mid mb-2">{r.cookedAt}</p>}
                 <p className="text-amber text-base tracking-wide">

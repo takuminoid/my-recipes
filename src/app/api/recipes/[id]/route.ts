@@ -24,7 +24,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 export async function PUT(request: NextRequest, { params }: Params) {
   const { id } = await params;
   const body = await request.json();
-  const { name, steps, cookedAt, refUrl, rating, memo, ingredients } = body;
+  const { name, steps, cookedAt, icon, refUrl, rating, memo, ingredients } = body;
 
   if (!name || !steps || !rating || !ingredients?.length) {
     return NextResponse.json({ error: "必須項目が不足しています" }, { status: 400 });
@@ -35,7 +35,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const result = db.transaction(() => {
     const updated = db
       .update(recipes)
-      .set({ name, steps, cookedAt, refUrl, rating, memo, updatedAt: now })
+      .set({ name, steps, cookedAt, icon, refUrl, rating, memo, updatedAt: now })
       .where(eq(recipes.id, Number(id)))
       .returning()
       .all();

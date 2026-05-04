@@ -22,6 +22,12 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import type { Recipe, RecipeIngredient } from "@/db/schema";
 
+const ICON_OPTIONS = [
+  "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕",
+  "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕", "🍞",
+  "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🍜", "🧆", "🥟", "🍙",
+];
+
 type Ingredient = { id: string; name: string; amount: string };
 
 type Props = {
@@ -87,6 +93,8 @@ function SortableIngredientRow({
 
 export default function RecipeForm({ initial }: Props) {
   const router = useRouter();
+  const [icon, setIcon] = useState(initial?.icon ?? "");
+  const [iconPickerOpen, setIconPickerOpen] = useState(false);
   const [name, setName] = useState(initial?.name ?? "");
   const [steps, setSteps] = useState(initial?.steps ?? "");
   const [cookedAt, setCookedAt] = useState(initial?.cookedAt ?? "");
@@ -151,6 +159,7 @@ export default function RecipeForm({ initial }: Props) {
       name,
       steps,
       cookedAt,
+      icon: icon || null,
       refUrl,
       rating,
       memo,
@@ -188,6 +197,42 @@ export default function RecipeForm({ initial }: Props) {
           ))}
         </ul>
       )}
+
+      <div>
+        <label className="block text-sm font-medium mb-1">アイコン</label>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIconPickerOpen((o) => !o)}
+            className="text-4xl w-16 h-16 flex items-center justify-center border-2 border-brown-light rounded-xl hover:border-terra transition-colors bg-white"
+          >
+            {icon || "🍽️"}
+          </button>
+          {iconPickerOpen && (
+            <div className="absolute z-10 top-[calc(100%+6px)] left-0 bg-white border border-brown-light rounded-xl shadow-lg p-3 grid grid-cols-6 gap-1 w-64">
+              {ICON_OPTIONS.map((e) => (
+                <button
+                  key={e}
+                  type="button"
+                  onClick={() => { setIcon(e); setIconPickerOpen(false); }}
+                  className={`text-2xl p-1.5 rounded-lg hover:bg-terra-light transition-colors ${icon === e ? "bg-terra-light ring-2 ring-terra" : ""}`}
+                >
+                  {e}
+                </button>
+              ))}
+              {icon && (
+                <button
+                  type="button"
+                  onClick={() => { setIcon(""); setIconPickerOpen(false); }}
+                  className="col-span-6 mt-1 text-xs text-brown-mid hover:text-terra py-1"
+                >
+                  リセット
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       <div>
         <label className="block text-sm font-medium mb-1">
