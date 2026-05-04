@@ -21,7 +21,7 @@ export default async function RecipeDetailPage({
             ← 一覧に戻る
           </Link>
           <h1 className="text-2xl font-bold">{recipe.name}</h1>
-          <p className="text-sm text-zinc-500 mt-1">{recipe.cookedAt}</p>
+          {recipe.cookedAt && <p className="text-sm text-zinc-500 mt-1">{recipe.cookedAt}</p>}
           <p className="text-yellow-500 mt-1">{"★".repeat(recipe.rating)}</p>
         </div>
         <div className="flex gap-2">

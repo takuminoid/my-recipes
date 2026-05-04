@@ -49,7 +49,7 @@ export default function Home() {
               >
                 <div>
                   <p className="font-medium">{r.name}</p>
-                  <p className="text-sm text-zinc-500">{r.cookedAt}</p>
+                  {r.cookedAt && <p className="text-sm text-zinc-500">{r.cookedAt}</p>}
                 </div>
                 <div className="text-yellow-500 text-sm">{"★".repeat(r.rating)}</div>
               </Link>

@@ -48,7 +48,6 @@ export default function RecipeForm({ initial }: Props) {
     const errs: string[] = [];
     if (!name.trim()) errs.push("料理名は必須です");
     if (!steps.trim()) errs.push("作り方は必須です");
-    if (!cookedAt) errs.push("作った日は必須です");
     const validIngredients = ingredients.filter((i) => i.name.trim());
     if (validIngredients.length === 0) errs.push("材料を1件以上入力してください");
 
@@ -105,9 +104,7 @@ export default function RecipeForm({ initial }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1">
-          作った日 <span className="text-red-500">*</span>
-        </label>
+        <label className="block text-sm font-medium mb-1">作った日</label>
         <input
           type="date"
           value={cookedAt}
