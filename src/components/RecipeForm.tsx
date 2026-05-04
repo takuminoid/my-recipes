@@ -3,13 +3,87 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import type { Recipe, RecipeIngredient } from "@/db/schema";
 
-type Ingredient = { name: string; amount: string };
+type Ingredient = { id: string; name: string; amount: string };
 
 type Props = {
   initial?: Recipe & { ingredients: RecipeIngredient[] };
 };
+
+function SortableIngredientRow({
+  ing,
+  onUpdate,
+  onRemove,
+  showRemove,
+}: {
+  ing: Ingredient;
+  onUpdate: (field: "name" | "amount", value: string) => void;
+  onRemove: () => void;
+  showRemove: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: ing.id,
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={`flex gap-2 items-center ${isDragging ? "opacity-50" : ""}`}
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        className="cursor-grab touch-none text-zinc-300 hover:text-zinc-500 px-1 text-lg leading-none"
+        tabIndex={-1}
+      >
+        ⠿
+      </button>
+      <input
+        type="text"
+        placeholder="材料名"
+        value={ing.name}
+        onChange={(e) => onUpdate("name", e.target.value)}
+        className="flex-1 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+      />
+      <input
+        type="text"
+        placeholder="量（例: 300g）"
+        value={ing.amount}
+        onChange={(e) => onUpdate("amount", e.target.value)}
+        className="w-32 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+      />
+      {showRemove && (
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-zinc-400 hover:text-red-500 text-lg leading-none"
+        >
+          ×
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default function RecipeForm({ initial }: Props) {
   const router = useRouter();
@@ -20,25 +94,41 @@ export default function RecipeForm({ initial }: Props) {
   const [rating, setRating] = useState(initial?.rating ?? 3);
   const [memo, setMemo] = useState(initial?.memo ?? "");
   const [ingredients, setIngredients] = useState<Ingredient[]>(
-    initial?.ingredients.map((i) => ({ name: i.name, amount: i.amount })) ?? [
-      { name: "", amount: "" },
+    initial?.ingredients.map((i) => ({ id: crypto.randomUUID(), name: i.name, amount: i.amount })) ?? [
+      { id: crypto.randomUUID(), name: "", amount: "" },
     ]
   );
   const [stepsTab, setStepsTab] = useState<"edit" | "preview">("edit");
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setIngredients((prev) => {
+        const oldIndex = prev.findIndex((i) => i.id === active.id);
+        const newIndex = prev.findIndex((i) => i.id === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
+      });
+    }
+  }
+
   function addIngredient() {
-    setIngredients((prev) => [...prev, { name: "", amount: "" }]);
+    setIngredients((prev) => [...prev, { id: crypto.randomUUID(), name: "", amount: "" }]);
   }
 
-  function removeIngredient(index: number) {
-    setIngredients((prev) => prev.filter((_, i) => i !== index));
+  function removeIngredient(id: string) {
+    setIngredients((prev) => prev.filter((i) => i.id !== id));
   }
 
-  function updateIngredient(index: number, field: keyof Ingredient, value: string) {
+  function updateIngredient(id: string, field: "name" | "amount", value: string) {
     setIngredients((prev) =>
-      prev.map((ing, i) => (i === index ? { ...ing, [field]: value } : ing))
+      prev.map((ing) => (ing.id === id ? { ...ing, [field]: value } : ing))
     );
   }
 
@@ -57,7 +147,15 @@ export default function RecipeForm({ initial }: Props) {
     }
 
     setSubmitting(true);
-    const payload = { name, steps, cookedAt, refUrl, rating, memo, ingredients: validIngredients };
+    const payload = {
+      name,
+      steps,
+      cookedAt,
+      refUrl,
+      rating,
+      memo,
+      ingredients: validIngredients.map(({ name, amount }) => ({ name, amount })),
+    };
 
     const res = initial
       ? await fetch(`/api/recipes/${initial.id}`, {
@@ -126,35 +224,21 @@ export default function RecipeForm({ initial }: Props) {
             + 追加
           </button>
         </div>
-        <div className="space-y-2">
-          {ingredients.map((ing, i) => (
-            <div key={i} className="flex gap-2">
-              <input
-                type="text"
-                placeholder="材料名"
-                value={ing.name}
-                onChange={(e) => updateIngredient(i, "name", e.target.value)}
-                className="flex-1 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-              />
-              <input
-                type="text"
-                placeholder="量（例: 300g）"
-                value={ing.amount}
-                onChange={(e) => updateIngredient(i, "amount", e.target.value)}
-                className="w-32 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-              />
-              {ingredients.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeIngredient(i)}
-                  className="text-zinc-400 hover:text-red-500 text-lg leading-none"
-                >
-                  ×
-                </button>
-              )}
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={ingredients.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+            <div className="space-y-2">
+              {ingredients.map((ing) => (
+                <SortableIngredientRow
+                  key={ing.id}
+                  ing={ing}
+                  onUpdate={(field, value) => updateIngredient(ing.id, field, value)}
+                  onRemove={() => removeIngredient(ing.id)}
+                  showRemove={ingredients.length > 1}
+                />
+              ))}
             </div>
-          ))}
-        </div>
+          </SortableContext>
+        </DndContext>
       </div>
 
       <div>
