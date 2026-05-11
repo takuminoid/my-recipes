@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import DeleteButton from "./DeleteButton";
 
-const FOOD_EMOJIS = ["🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕", "🍲", "🥞", "🍤", "🥚", "🍚"];
+const FOOD_EMOJIS = [
+  "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕",
+  "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕", "🍞",
+  "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🧆", "🥟", "🍙",
+];
 
 function recipeEmoji(name: string) {
   let hash = 0;

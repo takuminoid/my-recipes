@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Recipe } from "@/db/schema";
 
-const FOOD_EMOJIS = ["🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕", "🍲", "🥞", "🍤", "🥚", "🍚"];
+const FOOD_EMOJIS = [
+  "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕",
+  "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕", "🍞",
+  "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🧆", "🥟", "🍙",
+];
 
 function recipeEmoji(name: string) {
   let hash = 0;
