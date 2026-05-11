@@ -3,17 +3,6 @@ import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import DeleteButton from "./DeleteButton";
 
-const FOOD_EMOJIS = [
-  "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕",
-  "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕", "🍞",
-  "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🧆", "🥟", "🍙",
-];
-
-function recipeEmoji(name: string) {
-  let hash = 0;
-  for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) & 0xffff;
-  return FOOD_EMOJIS[hash % FOOD_EMOJIS.length];
-}
 
 export default async function RecipeDetailPage({
   params,
@@ -34,7 +23,7 @@ export default async function RecipeDetailPage({
 
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-5xl mb-3">{recipe.icon || recipeEmoji(recipe.name)}</p>
+          <p className="text-5xl mb-3">{recipe.icon || "🍽️"}</p>
           <h1 className="text-2xl font-bold text-brown-dark leading-snug">{recipe.name}</h1>
           {recipe.cookedAt && <p className="text-sm text-brown-mid mt-1">{recipe.cookedAt}</p>}
           <p className="text-amber mt-1 text-lg tracking-wide">
