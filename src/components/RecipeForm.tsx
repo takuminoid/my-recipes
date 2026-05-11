@@ -23,9 +23,9 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Recipe, RecipeIngredient } from "@/db/schema";
 
 const ICON_OPTIONS = [
-  "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘", "🫕",
-  "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕", "🍞",
-  "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🧆", "🥟", "🍙",
+  "🍽️", "🍗", "🍝", "🍜", "🥗", "🍛", "🍱", "🥩", "🍣", "🥘",
+  "🫕", "🍲", "🥞", "🍤", "🥚", "🍚", "🍔", "🌮", "🥪", "🍕",
+  "🍞", "🥦", "🥕", "🧅", "🍅", "🫙", "🥣", "🧆", "🥟", "🍙",
 ];
 
 type Ingredient = { id: string; name: string; amount: string };
