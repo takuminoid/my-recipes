@@ -43,5 +43,8 @@ next-env.d.ts
 # local data
 recipes.db
 
+# uploaded recipe photos (served via /api/uploads/[name])
+/uploads/
+
 # claude code
 .claude/
