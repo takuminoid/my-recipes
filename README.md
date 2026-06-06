@@ -1,6 +1,6 @@
-# My Recipes
+# たくみんレシピ
 
-日々の自炊レシピを記録・参照するための個人用ローカル Web アプリ。
+日々の自炊レシピを記録・参照するための個人用ローカル Web アプリ。テラコッタ × クリームの「料理本」風デザイン（明朝見出し）。
 
 ![一覧画面](docs/screenshots/list.png)
 
@@ -8,10 +8,11 @@
 
 - レシピの追加・編集・削除
 - 料理名でのリアルタイム検索
-- 作った日の新しい順にグリッド表示
-- アイコン（絵文字）をピッカーで選択（未設定時は自動アサイン）
+- 並び替え（新しい順／評価順／名前順）でグリッド表示
+- 料理写真のアップロード（カード・詳細のヒーローに表示）
+- 写真未設定時は料理名の頭文字を使った文字タイル（モノグラム・6色から選択）
 - 材料の名前・量を管理（ドラッグ&ドロップで並び替え可）
-- 作り方の Markdown 記述対応
+- 作り方の Markdown 記述対応（番号付き手順をタイムライン表示）
 - 評価（★1〜5）・参考 URL・メモの記録
 - 作った日は任意入力
 
@@ -23,7 +24,8 @@
 |---|---|
 | フレームワーク | [Next.js 16](https://nextjs.org) (App Router) |
 | DB | [Drizzle ORM](https://orm.drizzle.team) + SQLite (`better-sqlite3`) |
-| スタイル | [Tailwind CSS v4](https://tailwindcss.com) |
+| スタイル | [Tailwind CSS v4](https://tailwindcss.com) + CSS デザインシステム（`globals.css`） |
+| フォント | Shippori Mincho / Zen Kaku Gothic New / JetBrains Mono（Google Fonts） |
 | プロセス管理 | [PM2](https://pm2.keymetrics.io) |
 
 ## 動作環境
@@ -83,10 +85,12 @@ make deploy
 ## データ
 
 レシピデータは `recipes.db`（SQLite ファイル）にローカル保存される。
+アップロードした料理写真は `uploads/`（`public/` 外）に保存され、`GET /api/uploads/[name]` 経由で配信される。
 バックアップは手動でファイルをコピーすること。
 
 ```bash
 cp recipes.db recipes.db.bak
+cp -r uploads uploads.bak
 ```
 
 ## ライセンス
