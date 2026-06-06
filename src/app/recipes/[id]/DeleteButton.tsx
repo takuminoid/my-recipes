@@ -15,10 +15,7 @@ export default function DeleteButton({ id }: { id: string }) {
   }
 
   return (
-    <button
-      onClick={handleDelete}
-      className="text-sm px-4 py-2 border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors"
-    >
+    <button onClick={handleDelete} className="btn btn--danger-ghost">
       削除
     </button>
   );

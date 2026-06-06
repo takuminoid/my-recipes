@@ -12,10 +12,5 @@ export default async function EditRecipePage({
   if (!res.ok) notFound();
   const recipe = await res.json();
 
-  return (
-    <div className="max-w-2xl mx-auto px-5 py-8">
-      <h1 className="text-2xl font-bold text-brown-dark mb-6">レシピを編集</h1>
-      <RecipeForm initial={recipe} />
-    </div>
-  );
+  return <RecipeForm initial={recipe} />;
 }
