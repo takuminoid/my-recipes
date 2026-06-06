@@ -91,4 +91,6 @@ cp recipes.db recipes.db.bak
 
 ## ライセンス
 
-[MIT](LICENSE)
+このプロジェクトは [MIT License](LICENSE) のもとで公開されている。
+
+Copyright (c) 2026 Takumi Sato
